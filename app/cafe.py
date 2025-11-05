@@ -45,28 +45,29 @@ class Cafe:
             OutdatedVaccineError: If vaccine expiration_date is before today.
             NotWearingMaskError: If visitor is not wearing a mask.
         """
+        visitor_name = visitor.get("name", "Unknown")
         if "vaccine" not in visitor:
             raise NotVaccinatedError(
-                f"Visitor {visitor.get("name", "Unknown")} is not vaccinated"
+                f"Visitor {visitor_name} is not vaccinated"
             )
 
         vaccine = visitor["vaccine"]
         expiration = vaccine.get("expiration_date")
         if expiration is None:
             raise NotVaccinatedError(
-                f"Visitor {visitor.get("name", "Unknown")} "
+                f"Visitor {visitor_name} "
                 f"has no vaccine expiration date"
             )
 
         if expiration < datetime.date.today():
             raise OutdatedVaccineError(
-                f"Visitor {visitor.get("name", "Unknown")}'s "
+                f"Visitor {visitor_name}'s "
                 f"vaccine expired on {expiration}"
             )
 
         if not visitor.get("wearing_a_mask", False):
             raise NotWearingMaskError(
-                f"Visitor {visitor.get("name", "Unknown")} "
+                f"Visitor {visitor_name} "
                 f"is not wearing a mask"
             )
 
